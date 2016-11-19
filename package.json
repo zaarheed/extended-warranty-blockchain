@@ -1,0 +1,25 @@
+{
+  "name": "vlw",
+  "version": "1.0.0",
+  "description": "Setup Ethereum Studio by copy pasting the following line into the command prompt of the IDE: ``` wget https://raw.githubusercontent.com/validitylabs/ValidityWireframe/master/setupEthereumStudio.sh && sudo chmod +x setupEthereumStudio.sh && ./setupEthereumStudio.sh ```",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/validitylabs/ValidityWireframe.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/validitylabs/ValidityWireframe/issues"
+  },
+  "homepage": "https://github.com/validitylabs/ValidityWireframe#readme",
+  "dependencies": {
+    "async": "^2.1.1",
+    "express": "^4.14.0",
+    "ipfs-api": "^9.0.0",
+    "web3": "^0.17.0-beta"
+  }
+}
