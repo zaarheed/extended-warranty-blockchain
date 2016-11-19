@@ -1,8 +1,6 @@
 pragma solidity ^0.4.2;
 
 contract Warranty {
-    var Claim;
-    
     function stringsEqual(string storage _a, string memory _b) internal returns (bool) {
         bytes storage a = bytes(_a);
         bytes memory b = bytes(_b);
@@ -17,6 +15,7 @@ contract Warranty {
 
     // Contract
     uint insurerAddress = 0;
+    uint repairCutoff = 70;
     uint nextPolicyID = 0;
     
     struct Policy {
@@ -32,6 +31,7 @@ contract Warranty {
     struct Claim {
         address customerAddress;
         string serialNumber;
+        uint itemRetailPrice;
         uint claimDate;
         uint costRepairQuoted;
         address repairShopAddress;
@@ -98,12 +98,12 @@ contract Warranty {
     
     function newClaim(address customerAddress, string serialNumber, uint claimDate, address repairShopAddress, address retailerAddress) {
         var policy = getPolicy(customerAddress, serialNumber);
-        var claim = Claim(customerAddress, serialNumber, claimDate, 0, repairShopAddress, retailerAddress, false, false, false);
+        var claim = Claim(customerAddress, serialNumber, policy.retailPrice, claimDate, 0, repairShopAddress, retailerAddress, false, false, false);
         Claims[policy.policyID] = claim;
     }
     
     function getClaim(uint policyID) internal returns(Claim){
-        Claim = Claims[policyID];
+        return Claims[policyID];
     }
     
     function getClaimDetails(uint policyID) public constant returns(address, string, uint, uint, address, address, bool, bool, bool){
@@ -111,8 +111,14 @@ contract Warranty {
         return (claim.customerAddress, claim.serialNumber, claim.claimDate, claim.costRepairQuoted, claim.repairShopAddress, claim.retailerAddress, claim.replacementChosen, claim.approved, claim.closed);
     }
     
-    function quoteClaim() {
-        // GET POLICY ID AND ADD VALUE TO CLIAM
+    function quoteClaim(uint policyID, uint costOfRepair) {
+        var claim = getClaim(policyID);
+        claim.costRepairQuoted = costOfRepair;
+        if (claim.itemRetailPrice * repairCutoff / 100 > costOfRepair){
+            //PAY CLAIM TO REPAIR
+        }else{
+            //NEW ITEM
+        }
     }
     
     function transferPolicy(address from, address to, string serialNumber) {
